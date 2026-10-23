@@ -50,13 +50,34 @@ router.patch("/:id", async (req, res) => {
       .where(eq(tarefa.id, id))
       .returning();
 
-      if (!editado){
-        return res.status(404).json({message: "Tarefa não encontrada"})
-      }
+    if (!editado) {
+      return res.status(404).json({ message: "Tarefa não encontrada." });
+    }
 
-      res.status(200).json({message: "Tarefa atualizada.", tarefa:editado})
+    res.status(200).json({ message: "Tarefa atualizada.", tarefa: editado });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erro no servido" });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+        const [deletado] = await db
+      .delete(tarefa)
+      .where(eq(tarefa.id, id))
+      .returning();
+
+    if (!id) {
+      return res.status(404).json({ message: "Tarefa não encontrada." });
+    }
+
+      res.status(200).json({message: "Tarefa deletada."})
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Erro no servidor" });
   }
 });
