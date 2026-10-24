@@ -70,7 +70,7 @@ router.delete("/:id", async (req, res) => {
       .where(eq(tarefa.id, id))
       .returning();
 
-    if (!id) {
+    if (!deletado) {
       return res.status(404).json({ message: "Tarefa não encontrada." });
     }
 
