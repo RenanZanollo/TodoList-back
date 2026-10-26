@@ -39,14 +39,15 @@ router.get("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    const { isComplete } = req.body;
 
-    if (!id) {
-      return res.status(400).json({ message: "ID invalido" });
+    if (typeof isComplete !== "boolean") {
+      return res.status(400).json({ message: "isComplete deve ser true ou false." });
     }
 
     const [editado] = await db
       .update(tarefa)
-      .set({ isComplete: true })
+      .set({ isComplete: isComplete })
       .where(eq(tarefa.id, id))
       .returning();
 
